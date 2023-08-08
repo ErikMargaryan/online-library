@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.billing_addresses</OriginalElement>
+  <nodes>
+    <node x="1235.0424234657362" y="376.3942574211535">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.billing_addresses</node>
+    <node x="1434.477664644488" y="-22.89479183270589">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.user_favorite_genres</node>
+    <node x="-81.3222275351427" y="158.4997327942238">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.libraries</node>
+    <node x="1239.0424234657362" y="-59.39479183270589">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.credit_card</node>
+    <node x="817.9208731321098" y="158.4997327942238">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.purchase</node>
+    <node x="1662.1639737993626" y="182.49973279422377">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.roles</node>
+    <node x="1230.5424234657362" y="146.4997327942238">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users</node>
+    <node x="177.48854763167043" y="400.8942574211536">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.libraries_books</node>
+    <node x="379.29932279848356" y="110.4997327942238">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books</node>
+    <node x="606.6100979652967" y="400.8942574211536">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books_purchases</node>
+    <node x="1477.477664644488" y="400.8942574211536">8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users_roles</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books_purchases" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users_roles" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.user_favorite_genres" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.purchase" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users_roles" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.roles" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.libraries_books" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.billing_addresses" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.books_purchases" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.purchase" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.credit_card" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.users" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.purchase" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.credit_card" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.libraries_books" target="8a93e11d-8ef9-46c3-b2c3-ebfb7849553e.TABLE:library.public.libraries" relationship="REFERENCES">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Circular" zoom="0.5933687907559103" showDependencies="false" x="1112.2300893805054" y="402.47152676967505" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
