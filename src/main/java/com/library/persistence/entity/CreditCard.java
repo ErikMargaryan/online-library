@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "credit_card")
@@ -26,4 +28,6 @@ public class CreditCard {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.ALL)
+    private List<Purchase> purchase = new ArrayList<>();
 }

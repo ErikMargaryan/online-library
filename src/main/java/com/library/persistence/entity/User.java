@@ -29,13 +29,17 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
+    @ElementCollection
+    @CollectionTable(name = "user_favorite_genres", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "favorite_genre")
+    private List<String> favoriteGenres = new ArrayList<>();
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private BillingAddress address;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CreditCard> creditCards = new ArrayList<>();
-    @OneToMany(mappedBy = "user")
-    private List<Purchase> purchase = new ArrayList<>();
-    @OneToMany(mappedBy = "user")
-    private List<UserRole> userRoles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Purchase> purchases = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserRole> userRoles = new ArrayList<>();
 }

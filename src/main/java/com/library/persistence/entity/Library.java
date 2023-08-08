@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,6 @@ public class Library {
     private String phoneNumber;
     @Column(name = "website")
     private URL website;
-    @OneToMany(mappedBy = "library")
-    private List<LibraryBook> libraryBooks;
+    @OneToMany(mappedBy = "library", cascade = CascadeType.PERSIST)
+    private List<LibraryBook> libraryBooks = new ArrayList<>();
 }

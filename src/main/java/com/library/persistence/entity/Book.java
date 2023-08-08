@@ -2,14 +2,15 @@ package com.library.persistence.entity;
 
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import com.library.persistence.entity.joinEntity.LibraryBook;
-import com.library.persistence.entity.joinEntity.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,8 +39,10 @@ public class Book {
     private LocalDate published;
     @Column(name = "publisher")
     private String publisher;
-    @OneToMany(mappedBy = "book")
-    private List<LibraryBook> libraryBooks;
-    @OneToMany(mappedBy = "book")
-    private List<BookPurchase> bookPurchases;
+    @Column(name = "price")
+    private BigDecimal price = BigDecimal.ZERO;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    private List<LibraryBook> libraryBooks = new ArrayList<>();
+    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    private List<BookPurchase> bookPurchases = new ArrayList<>();
 }

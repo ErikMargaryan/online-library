@@ -22,6 +22,6 @@ public class Role {
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "role")
-    private List<UserRole> hotelRoles;
+    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
+    private List<UserRole> userRoles;
 }

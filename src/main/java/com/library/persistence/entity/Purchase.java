@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,12 +22,15 @@ public class Purchase {
     @Column(name = "id")
     private Long id;
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
     @Column(name = "total_price")
-    private Long totalPrice;
+    private BigDecimal totalPrice;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "purchase")
-    private List<BookPurchase> bookPurchases;
+    @ManyToOne
+    @JoinColumn(name = "credit_card_id")
+    private CreditCard creditCard;
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.PERSIST)
+    private List<BookPurchase> bookPurchases = new ArrayList<>();
 }
