@@ -1,6 +1,5 @@
 package com.library.dto.response;
 
-import com.library.persistence.entity.composite.LibraryBookKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

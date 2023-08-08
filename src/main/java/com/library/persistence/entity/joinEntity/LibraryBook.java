@@ -1,6 +1,5 @@
 package com.library.persistence.entity.joinEntity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.library.persistence.entity.Book;
 import com.library.persistence.entity.Library;
 import com.library.persistence.entity.composite.LibraryBookKey;

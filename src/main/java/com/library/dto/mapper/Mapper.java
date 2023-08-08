@@ -7,13 +7,9 @@ import com.library.persistence.entity.composite.BookPurchaseKey;
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import com.library.persistence.entity.joinEntity.LibraryBook;
 import com.library.persistence.entity.joinEntity.UserRole;
-import jdk.jfr.Name;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
