@@ -1,4 +1,4 @@
-package com.library;
+package com.library.dto.response;
 
 import com.library.persistence.entity.Book;
 import lombok.AllArgsConstructor;
