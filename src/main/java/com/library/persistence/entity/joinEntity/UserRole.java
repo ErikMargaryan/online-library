@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRole {
+
     @EmbeddedId
     private UserRoleKey id;
 
