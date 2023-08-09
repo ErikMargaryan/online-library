@@ -3,10 +3,10 @@ package com.library.dto.mapper;
 import com.library.dto.request.*;
 import com.library.dto.response.*;
 import com.library.persistence.entity.*;
-import com.library.persistence.entity.composite.BookPurchaseKey;
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import com.library.persistence.entity.joinEntity.LibraryBook;
 import com.library.persistence.entity.joinEntity.UserRole;
+import org.mapstruct.Context;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
@@ -71,16 +71,12 @@ public interface Mapper {
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "creditCard.id", target = "creditCardId")
-    @Mapping(source = "user", target = "bookIds", qualifiedByName = "mapUserToBookIds")
-    PurchaseResponseDto toDto(Purchase entity);
+    @Mapping(target = "bookIds", source = "bookPurchases")
+    PurchaseResponseDto toDto(Purchase entity, @Context List<Long> bookIds);
 
-    @Named("mapUserToBookIds")
-    default List<Long> mapUserToBookIds(User user) {
-        return user.getPurchases().stream()
-                .flatMap(bookPurchase -> bookPurchase.getBookPurchases().stream())
-                .map(BookPurchase::getId)
-                .map(BookPurchaseKey::getBookId)
+    default List<Long> mapBookPurchasesToBookIds(List<BookPurchase> bookPurchases) {
+        return bookPurchases.stream()
+                .map(bookPurchase -> bookPurchase.getBook().getId())
                 .toList();
     }
-
 }

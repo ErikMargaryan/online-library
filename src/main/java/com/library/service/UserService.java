@@ -95,7 +95,8 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            return mapper.toDto(user);
+            UserResponseDto dto = mapper.toDto(user);
+            return dto;
         } else {
             throw new NotFoundException("User not found with ID: " + id);
         }

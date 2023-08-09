@@ -67,7 +67,7 @@ public class PurchaseService {
             book.getBookPurchases().add(bookPurchase);
         }
 
-        PurchaseResponseDto purchaseResponseDto = mapper.toDto(savedPurchase);
+        PurchaseResponseDto purchaseResponseDto = mapper.toDto(savedPurchase, purchaseRequestDto.getBookIds());
         purchaseResponseDto.setBookIds(purchaseRequestDto.getBookIds());
         return purchaseResponseDto;
     }
@@ -75,18 +75,33 @@ public class PurchaseService {
     public List<PurchaseResponseDto> findAllPurchases() {
         List<Purchase> purchases = purchaseRepository.findAll();
         return purchases.stream()
-                .map(mapper::toDto)
+                .map(purchase -> {
+                    List<Long> bookIds = purchase.getBookPurchases().stream()
+                            .map(bookPurchase -> bookPurchase.getBook().getId())
+                            .collect(Collectors.toList());
+                    return mapper.toDto(purchase, bookIds);
+                })
                 .collect(Collectors.toList());
     }
     public List<PurchaseResponseDto> findPurchaseByUserId(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
+
         if (userOptional.isPresent()) {
-            List<Purchase> purchases = userOptional.get().getPurchases();
+            User user = userOptional.get();
+            List<Purchase> purchases = user.getPurchases();
+
             return purchases.stream()
-                    .map(mapper::toDto)
-                    .toList();
-        }
-        else {
+                    .map(purchase -> {
+                        List<Long> bookIds = purchase.getBookPurchases().stream()
+                                .map(bookPurchase -> bookPurchase.getBook().getId())
+                                .collect(Collectors.toList());
+
+                        PurchaseResponseDto purchaseResponseDto = mapper.toDto(purchase, bookIds);
+                        purchaseResponseDto.setBookIds(bookIds);
+                        return purchaseResponseDto;
+                    })
+                    .collect(Collectors.toList());
+        } else {
             throw new NotFoundException("User Purchase not found with User ID: " + userId);
         }
     }
