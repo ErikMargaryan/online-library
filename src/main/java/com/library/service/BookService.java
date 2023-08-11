@@ -105,7 +105,7 @@ public class BookService {
 
     public List<BookResponseDto> suggestBooksForUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<String> userFavoriteGenres = user.getFavoriteGenres();
         List<Book> booksByGenres = bookRepository.getBookByGenres(userFavoriteGenres);
         List<Book> suggestedBooks = booksByGenres.stream()
