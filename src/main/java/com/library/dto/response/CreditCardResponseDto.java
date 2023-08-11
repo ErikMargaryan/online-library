@@ -3,6 +3,7 @@ package com.library.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreditCardResponseDto implements Serializable {
+public class CreditCardResponseDto extends RepresentationModel<CreditCardResponseDto> implements Serializable {
     private Long id;
     private String pan;
     private LocalDate expirationDate;

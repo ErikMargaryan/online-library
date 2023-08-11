@@ -3,6 +3,7 @@ package com.library.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseResponseDto implements Serializable {
+public class PurchaseResponseDto extends RepresentationModel<PurchaseResponseDto> implements Serializable {
     private Long id;
     private LocalDate date;
     private BigDecimal totalPrice;

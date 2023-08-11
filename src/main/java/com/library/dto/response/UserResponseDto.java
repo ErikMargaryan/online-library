@@ -3,6 +3,7 @@ package com.library.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto implements Serializable {
+public class UserResponseDto extends RepresentationModel<UserResponseDto> implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
