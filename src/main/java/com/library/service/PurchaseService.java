@@ -3,7 +3,6 @@ package com.library.service;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.PurchaseRequestDto;
 import com.library.dto.response.PurchaseResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.Book;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.Purchase;
@@ -111,7 +110,7 @@ public class PurchaseService {
                     .collect(Collectors.toList());
             return new PageImpl<>(purchaseResponseDtos, pageable, purchaseResponseDtos.size());
         } else {
-            throw new NotFoundException("User Purchase not found with User ID: " + userId);
+            throw new EntityNotFoundException("User Purchase not found with User ID: " + userId);
         }
     }
 
