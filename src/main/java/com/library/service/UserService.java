@@ -4,7 +4,6 @@ import com.library.csvData.UserCSVModel;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.UserRequestDto;
 import com.library.dto.response.UserResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
@@ -14,6 +13,9 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,11 +45,12 @@ public class UserService {
         return mapper.toDto(savedUser);
     }
 
-    public List<UserResponseDto> findAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
+    public Page<UserResponseDto> findAllUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        List<UserResponseDto> userResponseDtos = users.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+        return new PageImpl<>(userResponseDtos, pageable, users.getTotalElements());
     }
     @Transactional
     public void parseAndSaveCSV(MultipartFile file) throws IOException {
@@ -91,15 +94,9 @@ public class UserService {
         }
     }
 
-    public UserResponseDto findUserById(Long id) {
+    public Optional<UserResponseDto> findUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            UserResponseDto dto = mapper.toDto(user);
-            return dto;
-        } else {
-            throw new NotFoundException("User not found with ID: " + id);
-        }
+        return userOptional.map(mapper::toDto);
     }
 
     public UserResponseDto updateUser(Long id, UserRequestDto userDto) {

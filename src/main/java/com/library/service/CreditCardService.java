@@ -3,13 +3,15 @@ package com.library.service;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.CreditCardRequestDto;
 import com.library.dto.response.CreditCardResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
 import com.library.persistence.repository.CreditCardRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,20 +42,16 @@ public class CreditCardService {
         return creditCardResponseDto;
     }
 
-    public List<CreditCardResponseDto> findAllCreditCards() {
-        List<CreditCard> creditCards = creditCardRepository.findAll();
-        return creditCards.stream()
+    public Page<CreditCardResponseDto> findAllCreditCards(Pageable pageable) {
+        Page<CreditCard> creditCards = creditCardRepository.findAll(pageable);
+        List<CreditCardResponseDto> creditCardResponseDtos = creditCards.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+        return new PageImpl<>(creditCardResponseDtos, pageable, creditCards.getTotalElements());
     }
-    public CreditCardResponseDto findCreditCardById(Long id) {
+    public Optional<CreditCardResponseDto> findCreditCardById(Long id) {
         Optional<CreditCard> creditCardOptional = creditCardRepository.findById(id);
-        if (creditCardOptional.isPresent()) {
-            CreditCard creditCard = creditCardOptional.get();
-            return mapper.toDto(creditCard);
-        } else {
-            throw new NotFoundException("Credit Card not found with ID: " + id);
-        }
+        return creditCardOptional.map(mapper::toDto);
     }
 
     public CreditCardResponseDto updateCreditCard(Long id, CreditCardRequestDto creditCardRequestDto) {

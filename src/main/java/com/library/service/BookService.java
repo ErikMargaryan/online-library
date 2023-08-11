@@ -4,7 +4,6 @@ import com.library.dto.mapper.Mapper;
 import com.library.dto.request.BookRequestDto;
 import com.library.dto.response.ApiResponse;
 import com.library.dto.response.BookResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.Book;
 import com.library.persistence.entity.Library;
 import com.library.persistence.entity.User;
@@ -18,6 +17,9 @@ import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,20 +71,16 @@ public class BookService {
         return bookResponseDto;
     }
 
-    public List<BookResponseDto> findAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return books.stream()
+    public Page<BookResponseDto> findAllBooks(Pageable pageable) {
+        Page<Book> books = bookRepository.findAll(pageable);
+        List<BookResponseDto> bookResponseDtos = books.stream()
                 .map(mapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
+        return new PageImpl<>(bookResponseDtos, pageable, books.getTotalElements());
     }
-    public BookResponseDto findBookById(Long id) {
+    public Optional<BookResponseDto> findBookById(Long id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
-        if (bookOptional.isPresent()) {
-            Book book = bookOptional.get();
-            return mapper.toDto(book);
-        } else {
-            throw new NotFoundException("Book not found with ID: " + id);
-        }
+        return bookOptional.map(mapper::toDto);
     }
 
     public BookResponseDto updateBook(Long id, BookRequestDto bookRequestDto) {

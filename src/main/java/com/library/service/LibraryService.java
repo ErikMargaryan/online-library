@@ -3,11 +3,13 @@ package com.library.service;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.LibraryRequestDto;
 import com.library.dto.response.LibraryResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.Library;
 import com.library.persistence.repository.LibraryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,21 +30,17 @@ public class LibraryService {
         return mapper.toDto(savedLibrary);
     }
 
-    public List<LibraryResponseDto> findAllLibraries() {
-        List<Library> libraries = libraryRepository.findAll();
-        return libraries.stream()
+    public Page<LibraryResponseDto> findAllLibraries(Pageable pageable) {
+        Page<Library> libraries = libraryRepository.findAll(pageable);
+        List<LibraryResponseDto> libraryResponseDtos = libraries.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+        return new PageImpl<>(libraryResponseDtos, pageable, libraries.getTotalElements());
     }
 
-    public LibraryResponseDto findLibraryById(Long id) {
+    public Optional<LibraryResponseDto> findLibraryById(Long id) {
         Optional<Library> libraryOptional = libraryRepository.findById(id);
-        if (libraryOptional.isPresent()) {
-            Library library = libraryOptional.get();
-            return mapper.toDto(library);
-        } else {
-            throw new NotFoundException("Billing Address not found with ID: " + id);
-        }
+        return libraryOptional.map(mapper::toDto);
     }
 
     public LibraryResponseDto updateLibrary(Long id, LibraryRequestDto libraryRequestDto) {

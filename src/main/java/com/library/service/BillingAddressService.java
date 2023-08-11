@@ -3,13 +3,15 @@ package com.library.service;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.BillingAddressRequestDto;
 import com.library.dto.response.BillingAddressResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.User;
 import com.library.persistence.repository.BillingAddressRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,21 +42,17 @@ public class BillingAddressService {
         return billingAddressResponseDto;
     }
 
-    public List<BillingAddressResponseDto> findAllBillingAddresses() {
-        List<BillingAddress> billingAddresses = billingAddressRepository.findAll();
-        return billingAddresses.stream()
+    public Page<BillingAddressResponseDto> findAllBillingAddresses(Pageable pageable) {
+        Page<BillingAddress> billingAddresses = billingAddressRepository.findAll(pageable);
+        List<BillingAddressResponseDto> billingAddressResponseDtos = billingAddresses.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+        return new PageImpl<>(billingAddressResponseDtos, pageable, billingAddresses.getTotalPages());
     }
 
-    public BillingAddressResponseDto findBillingAddressById(Long id) {
+    public Optional<BillingAddressResponseDto> findBillingAddressById(Long id) {
         Optional<BillingAddress> billingAddressOptional = billingAddressRepository.findById(id);
-        if (billingAddressOptional.isPresent()) {
-            BillingAddress billingAddress = billingAddressOptional.get();
-            return mapper.toDto(billingAddress);
-        } else {
-            throw new NotFoundException("Billing Address not found with ID: " + id);
-        }
+        return billingAddressOptional.map(mapper::toDto);
     }
 
     public BillingAddressResponseDto updateBillingAddress(Long id, BillingAddressRequestDto billingAddressRequestDto) {

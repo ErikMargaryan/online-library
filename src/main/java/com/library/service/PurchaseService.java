@@ -17,6 +17,9 @@ import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -72,9 +75,9 @@ public class PurchaseService {
         return purchaseResponseDto;
     }
 
-    public List<PurchaseResponseDto> findAllPurchases() {
-        List<Purchase> purchases = purchaseRepository.findAll();
-        return purchases.stream()
+    public Page<PurchaseResponseDto> findAllPurchases(Pageable pageable) {
+        Page<Purchase> purchases = purchaseRepository.findAll(pageable);
+        List<PurchaseResponseDto> purchaseResponseDtos = purchases.stream()
                 .map(purchase -> {
                     List<Long> bookIds = purchase.getBookPurchases().stream()
                             .map(bookPurchase -> bookPurchase.getBook().getId())
@@ -82,15 +85,16 @@ public class PurchaseService {
                     return mapper.toDto(purchase, bookIds);
                 })
                 .collect(Collectors.toList());
+        return new PageImpl<>(purchaseResponseDtos, pageable, purchases.getTotalElements());
     }
-    public List<PurchaseResponseDto> findPurchaseByUserId(Long userId) {
+    public Page<PurchaseResponseDto> findPurchaseByUserId(Long userId, Pageable pageable) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<Purchase> purchases = user.getPurchases();
 
-            return purchases.stream()
+            List<PurchaseResponseDto> purchaseResponseDtos = purchases.stream()
                     .map(purchase -> {
                         List<Long> bookIds = purchase.getBookPurchases().stream()
                                 .map(bookPurchase -> bookPurchase.getBook().getId())
@@ -101,6 +105,7 @@ public class PurchaseService {
                         return purchaseResponseDto;
                     })
                     .collect(Collectors.toList());
+            return new PageImpl<>(purchaseResponseDtos, pageable, purchaseResponseDtos.size());
         } else {
             throw new NotFoundException("User Purchase not found with User ID: " + userId);
         }
