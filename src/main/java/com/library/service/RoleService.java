@@ -3,11 +3,13 @@ package com.library.service;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.RoleRequestDto;
 import com.library.dto.response.RoleResponseDto;
-import com.library.exception.NotFoundException;
 import com.library.persistence.entity.Role;
 import com.library.persistence.repository.RoleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,21 +24,17 @@ public class RoleService {
 
     private final Mapper mapper;
 
-    public List<RoleResponseDto> findAllRoles() {
-        List<Role> roles = roleRepository.findAll();
-        return roles.stream()
+    public Page<RoleResponseDto> findAllRoles(Pageable pageable) {
+        Page<Role> roles = roleRepository.findAll(pageable);
+        List<RoleResponseDto> roleResponseDtos = roles.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+        return new PageImpl<>(roleResponseDtos, pageable, roles.getTotalElements());
     }
 
-    public RoleResponseDto findRoleById(Long id) {
+    public Optional<RoleResponseDto> findRoleById(Long id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
-        if (roleOptional.isPresent()) {
-            Role role = roleOptional.get();
-            return mapper.toDto(role);
-        } else {
-            throw new NotFoundException("Role not found with ID: " + id);
-        }
+        return roleOptional.map(mapper::toDto);
     }
 
     public RoleResponseDto updateRole(Long id, RoleRequestDto roleRequestDto) {
