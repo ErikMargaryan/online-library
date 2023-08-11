@@ -16,11 +16,13 @@ import com.library.persistence.repository.LibraryRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -29,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class BookService {
 
@@ -50,7 +53,7 @@ public class BookService {
     }
 
     @Transactional
-    public BookResponseDto createBook(Long libraryId, BookRequestDto bookRequestDto) {
+    public BookResponseDto createBook(Long libraryId, @Valid BookRequestDto bookRequestDto) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new EntityNotFoundException("Library not found with id: " + libraryId));
 
@@ -83,7 +86,7 @@ public class BookService {
         return bookOptional.map(mapper::toDto);
     }
 
-    public BookResponseDto updateBook(Long id, BookRequestDto bookRequestDto) {
+    public BookResponseDto updateBook(Long id, @Valid BookRequestDto bookRequestDto) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + id));
 

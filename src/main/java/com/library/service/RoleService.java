@@ -6,17 +6,20 @@ import com.library.dto.response.RoleResponseDto;
 import com.library.persistence.entity.Role;
 import com.library.persistence.repository.RoleRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class RoleService {
     
@@ -37,7 +40,7 @@ public class RoleService {
         return roleOptional.map(mapper::toDto);
     }
 
-    public RoleResponseDto updateRole(Long id, RoleRequestDto roleRequestDto) {
+    public RoleResponseDto updateRole(Long id, @Valid RoleRequestDto roleRequestDto) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
 

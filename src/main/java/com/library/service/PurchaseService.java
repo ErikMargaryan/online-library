@@ -16,11 +16,13 @@ import com.library.persistence.repository.PurchaseRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class PurchaseService {
 
@@ -42,7 +45,7 @@ public class PurchaseService {
     private final Mapper mapper;
 
     @Transactional
-    public PurchaseResponseDto createPurchase(PurchaseRequestDto purchaseRequestDto) {
+    public PurchaseResponseDto createPurchase(@Valid PurchaseRequestDto purchaseRequestDto) {
         User user = userRepository.findById(purchaseRequestDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + purchaseRequestDto.getUserId()));
 
@@ -87,6 +90,7 @@ public class PurchaseService {
                 .collect(Collectors.toList());
         return new PageImpl<>(purchaseResponseDtos, pageable, purchases.getTotalElements());
     }
+
     public Page<PurchaseResponseDto> findPurchaseByUserId(Long userId, Pageable pageable) {
         Optional<User> userOptional = userRepository.findById(userId);
 

@@ -5,10 +5,13 @@ import com.library.dto.request.UserRoleKeyDto;
 import com.library.dto.response.UserRoleKeyResponseDto;
 import com.library.persistence.entity.joinEntity.UserRole;
 import com.library.persistence.repository.UserRoleRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class UserRoleService {
 
@@ -16,7 +19,7 @@ public class UserRoleService {
 
     private final Mapper mapper;
 
-    public UserRoleKeyResponseDto assignRoleToUser(UserRoleKeyDto userRoleKeyDto) {
+    public UserRoleKeyResponseDto assignRoleToUser(@Valid UserRoleKeyDto userRoleKeyDto) {
         UserRole entity = mapper.toEntity(userRoleKeyDto);
         return mapper.toDto(userRoleRepository.save(entity));
     }

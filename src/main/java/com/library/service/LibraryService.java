@@ -6,17 +6,20 @@ import com.library.dto.response.LibraryResponseDto;
 import com.library.persistence.entity.Library;
 import com.library.persistence.repository.LibraryRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class LibraryService {
 
@@ -24,7 +27,7 @@ public class LibraryService {
 
     private final Mapper mapper;
 
-    public LibraryResponseDto createLibrary(LibraryRequestDto libraryRequestDto) {
+    public LibraryResponseDto createLibrary(@Valid LibraryRequestDto libraryRequestDto) {
         Library library = mapper.toEntity(libraryRequestDto);
         Library savedLibrary = libraryRepository.save(library);
         return mapper.toDto(savedLibrary);
@@ -43,7 +46,7 @@ public class LibraryService {
         return libraryOptional.map(mapper::toDto);
     }
 
-    public LibraryResponseDto updateLibrary(Long id, LibraryRequestDto libraryRequestDto) {
+    public LibraryResponseDto updateLibrary(Long id, @Valid LibraryRequestDto libraryRequestDto) {
         Library library = libraryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Library not found with id: " + id));
 

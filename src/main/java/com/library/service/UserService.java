@@ -12,11 +12,13 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -32,6 +34,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class UserService {
 
@@ -39,7 +42,7 @@ public class UserService {
 
     private final Mapper mapper;
 
-    public UserResponseDto createUser(UserRequestDto userRequestDTO) {
+    public UserResponseDto createUser(@Valid UserRequestDto userRequestDTO) {
         User user = mapper.toEntity(userRequestDTO);
         User savedUser = userRepository.save(user);
         return mapper.toDto(savedUser);
@@ -99,7 +102,7 @@ public class UserService {
         return userOptional.map(mapper::toDto);
     }
 
-    public UserResponseDto updateUser(Long id, UserRequestDto userDto) {
+    public UserResponseDto updateUser(Long id, @Valid UserRequestDto userDto) {
         userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 

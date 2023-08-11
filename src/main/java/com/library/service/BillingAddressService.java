@@ -8,17 +8,20 @@ import com.library.persistence.entity.User;
 import com.library.persistence.repository.BillingAddressRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class BillingAddressService {
 
@@ -28,7 +31,7 @@ public class BillingAddressService {
 
     private final Mapper mapper;
 
-    public BillingAddressResponseDto createBillingAddress(Long userId, BillingAddressRequestDto billingAddressRequestDto) {
+    public BillingAddressResponseDto createBillingAddress(Long userId, @Valid BillingAddressRequestDto billingAddressRequestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
@@ -55,7 +58,7 @@ public class BillingAddressService {
         return billingAddressOptional.map(mapper::toDto);
     }
 
-    public BillingAddressResponseDto updateBillingAddress(Long id, BillingAddressRequestDto billingAddressRequestDto) {
+    public BillingAddressResponseDto updateBillingAddress(Long id, @Valid BillingAddressRequestDto billingAddressRequestDto) {
         BillingAddress billingAddress = billingAddressRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Billing Address not found with id: " + id));
 

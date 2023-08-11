@@ -8,17 +8,20 @@ import com.library.persistence.entity.User;
 import com.library.persistence.repository.CreditCardRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class CreditCardService {
 
@@ -28,7 +31,7 @@ public class CreditCardService {
 
     private final Mapper mapper;
 
-    public CreditCardResponseDto createCreditCard(Long userId, CreditCardRequestDto creditCardRequestDto) {
+    public CreditCardResponseDto createCreditCard(Long userId, @Valid CreditCardRequestDto creditCardRequestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
@@ -54,7 +57,7 @@ public class CreditCardService {
         return creditCardOptional.map(mapper::toDto);
     }
 
-    public CreditCardResponseDto updateCreditCard(Long id, CreditCardRequestDto creditCardRequestDto) {
+    public CreditCardResponseDto updateCreditCard(Long id, @Valid CreditCardRequestDto creditCardRequestDto) {
         CreditCard creditCard = creditCardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Credit Card not found with id: " + id));
 
