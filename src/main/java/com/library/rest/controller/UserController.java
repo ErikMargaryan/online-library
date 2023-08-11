@@ -7,6 +7,8 @@ import com.library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedModel<UserResponseDto>> getUsers(Pageable pageable) {
+    public ResponseEntity<PagedModel<UserResponseDto>> getUsers(@PageableDefault(sort = {"firstName", "lastName"},
+            direction = Sort.Direction.ASC) Pageable pageable) {
         Page<UserResponseDto> result = userService.findAllUsers(pageable);
         PagedModel<UserResponseDto> model = pagedResourcesAssembler.toModel(result, userModelAssembler);
         return ResponseEntity.ok(model);
