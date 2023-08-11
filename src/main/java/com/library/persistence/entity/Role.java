@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,5 +24,5 @@ public class Role {
     @Column(name = "description")
     private String description;
     @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
-    private List<UserRole> userRoles;
+    private List<UserRole> userRoles = new ArrayList<>();
 }
