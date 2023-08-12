@@ -41,13 +41,6 @@ public class UserController {
         }
     }
 
-//    @PostMapping
-//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
-//    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto userRequestDto) {
-//        UserResponseDto userResponseDto = userService.createUser(userRequestDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userModelAssembler.toModel(userResponseDto));
-//    }
-
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<UserResponseDto>> getUsers(@PageableDefault(sort = {"firstName", "lastName"},
