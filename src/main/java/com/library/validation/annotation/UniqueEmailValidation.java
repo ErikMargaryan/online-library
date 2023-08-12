@@ -15,7 +15,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Constraint(validatedBy = {DuplicateEmailValidator.class})
 public @interface UniqueEmailValidation {
     //error message
-    public String message() default "This username have already been";
+    public String message() default "This email have already been";
 
 
     //represents group of constraints
