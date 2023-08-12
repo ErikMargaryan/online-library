@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.library</groupId>
 	<artifactId>online-library</artifactId>
@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
-			<version>5.5.2</version> <!-- Use the latest version available -->
+			<version>5.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
