@@ -22,10 +22,16 @@ import java.util.stream.Collectors;
 @Validated
 @RequiredArgsConstructor
 public class RoleService {
-    
+
     private final RoleRepository roleRepository;
 
     private final Mapper mapper;
+
+    public RoleResponseDto createRole(@Valid RoleRequestDto roleRequestDto) {
+        Role role = mapper.toEntity(roleRequestDto);
+        Role savedRole = roleRepository.save(role);
+        return mapper.toDto(savedRole);
+    }
 
     public Page<RoleResponseDto> findAllRoles(Pageable pageable) {
         Page<Role> roles = roleRepository.findAll(pageable);
