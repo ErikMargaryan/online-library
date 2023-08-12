@@ -23,6 +23,6 @@ public class Role {
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserRole> userRoles = new ArrayList<>();
 }
