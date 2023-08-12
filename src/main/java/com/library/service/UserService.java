@@ -7,8 +7,6 @@ import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
-import com.library.persistence.entity.composite.UserRoleKey;
-import com.library.persistence.entity.joinEntity.UserRole;
 import com.library.persistence.repository.RoleRepository;
 import com.library.persistence.repository.UserRepository;
 import com.opencsv.bean.CsvToBean;
@@ -46,20 +44,6 @@ public class UserService {
     private final RoleRepository roleRepository;
 
     private final Mapper mapper;
-
-    public UserResponseDto createUser(@Valid UserRequestDto userRequestDTO) {
-        User user = mapper.toEntity(userRequestDTO);
-        User savedUser = userRepository.save(user);
-        if (user.getUserRoles().isEmpty()) {
-            Long roleIdOfUSER = roleRepository.findIdByRoleName("USER");
-            UserRoleKey userRoleKey = new UserRoleKey();
-            userRoleKey.setUserId(user.getId());
-            userRoleKey.setRoleId(roleIdOfUSER);
-            user.setUserRoles(List.of(new UserRole(userRoleKey, user, roleRepository.findById(roleIdOfUSER)
-                    .orElseThrow(() -> new EntityNotFoundException("Role not found")))));
-        }
-        return mapper.toDto(savedUser);
-    }
 
     public Page<UserResponseDto> findAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
