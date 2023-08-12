@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,10 +29,11 @@ public class UserRequestDto implements Serializable {
         @Schema(example = "erickmargarian@gmail.com")
         @NotBlank(message = "Email may not be empty, null or blank")
         @Email(message = "Email should be a valid email")
-        @UniqueEmailValidation
+        @UniqueEmailValidation(message = "Email is taken!")
         private String email;
         @Schema(example = "12345678")
         @NotBlank(message = "Password may not be empty, null or blank")
+        @Size(min = 6, max = 30, message = "Password should be between 6 and 30 characters")
         private String password;
         @Schema(example = "[\"Alias\"]")
         @NotEmpty(message = "Favorite Genres may not be empty, null or blank")
