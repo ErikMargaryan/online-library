@@ -13,6 +13,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,7 @@ public class UserController {
     private final PagedResourcesAssembler<UserResponseDto> pagedResourcesAssembler;
 
     @PostMapping("/upload-csv")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file) {
         try {
             userService.parseAndSaveCSV(file);
@@ -39,13 +41,15 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto userRequestDto) {
-        UserResponseDto userResponseDto = userService.createUser(userRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userModelAssembler.toModel(userResponseDto));
-    }
+//    @PostMapping
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
+//    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto userRequestDto) {
+//        UserResponseDto userResponseDto = userService.createUser(userRequestDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(userModelAssembler.toModel(userResponseDto));
+//    }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<UserResponseDto>> getUsers(@PageableDefault(sort = {"firstName", "lastName"},
             direction = Sort.Direction.ASC) Pageable pageable) {
         Page<UserResponseDto> result = userService.findAllUsers(pageable);
@@ -54,6 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable("id") Long id) {
         return userService.findUserById(id)
                 .map(userModelAssembler::toModel)
@@ -62,11 +67,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") Long id, @RequestBody UserRequestDto userDto) {
         return ResponseEntity.ok(userModelAssembler.toModel(userService.updateUser(id, userDto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User deleted successfully.");

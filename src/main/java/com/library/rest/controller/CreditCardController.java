@@ -11,6 +11,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class CreditCardController {
     private final PagedResourcesAssembler<CreditCardResponseDto> pagedResourcesAssembler;
 
     @PostMapping("/users/{userId}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<CreditCardResponseDto> addCreditCard(@PathVariable("userId") Long userId,
                                                @RequestBody CreditCardRequestDto creditCardDto) {
         CreditCardResponseDto creditCardResponseDto = creditCardService.createCreditCard(userId, creditCardDto);
@@ -32,6 +34,7 @@ public class CreditCardController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<CreditCardResponseDto>> getAllCreditCards(Pageable pageable) {
         Page<CreditCardResponseDto> result = creditCardService.findAllCreditCards(pageable);
         PagedModel<CreditCardResponseDto> model = pagedResourcesAssembler.toModel(result, creditCardModelAssembler);
@@ -39,6 +42,7 @@ public class CreditCardController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<CreditCardResponseDto> getCreditCardById(@PathVariable("id") Long id) {
         return creditCardService.findCreditCardById(id)
                 .map(creditCardModelAssembler::toModel)
@@ -47,12 +51,14 @@ public class CreditCardController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<CreditCardResponseDto> updateCreditCard(@PathVariable("id") Long id,
                                                   @RequestBody CreditCardRequestDto creditCardDto) {
         return ResponseEntity.ok(creditCardModelAssembler.toModel(creditCardService.updateCreditCard(id, creditCardDto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<String> deleteCreditCardById(@PathVariable("id") Long id) {
         creditCardService.deleteCreditCardById(id);
         return ResponseEntity.ok("Credit Card deleted successfully.");

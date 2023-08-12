@@ -11,6 +11,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class BillingAddressController {
     private final PagedResourcesAssembler<BillingAddressResponseDto> pagedResourcesAssembler;
 
     @PostMapping("/users/{userId}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BillingAddressResponseDto> addBillingAddress(@PathVariable("userId") Long userId,
                                                                        @RequestBody BillingAddressRequestDto billingAddressRequestDto) {
         BillingAddressResponseDto billingAddressResponseDto =
@@ -33,6 +35,7 @@ public class BillingAddressController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<BillingAddressResponseDto>> getAllBillingAddresses(Pageable pageable) {
         Page<BillingAddressResponseDto> result = billingAddressService.findAllBillingAddresses(pageable);
         PagedModel<BillingAddressResponseDto> model = pagedResourcesAssembler.toModel(result, billingAddressModelAssembler);
@@ -40,6 +43,7 @@ public class BillingAddressController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BillingAddressResponseDto> getBillingAddressById(@PathVariable("id") Long id) {
         return billingAddressService.findBillingAddressById(id)
                 .map(billingAddressModelAssembler::toModel)
@@ -48,12 +52,14 @@ public class BillingAddressController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BillingAddressResponseDto> updateBillingAddress(@PathVariable("id") Long id,
                                                                           @RequestBody BillingAddressRequestDto billingAddressRequestDto) {
         return ResponseEntity.ok(billingAddressModelAssembler.toModel(billingAddressService.updateBillingAddress(id, billingAddressRequestDto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<String> deleteBillingAddressById(@PathVariable("id") Long id) {
         billingAddressService.deleteBillingAddressById(id);
         return ResponseEntity.ok("Billing Address deleted successfully.");

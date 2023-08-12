@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +25,15 @@ public class RoleController {
 
     private final PagedResourcesAssembler<RoleResponseDto> pagedResourcesAssembler;
 
+    @PostMapping
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+    public ResponseEntity<RoleResponseDto> addRole(@RequestBody RoleRequestDto roleRequestDto) {
+        RoleResponseDto roleResponseDto = roleService.createRole(roleRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roleModelAssembler.toModel(roleResponseDto));
+    }
+
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<RoleResponseDto>> getAllRoles(Pageable pageable) {
         Page<RoleResponseDto> result = roleService.findAllRoles(pageable);
         PagedModel<RoleResponseDto> model = pagedResourcesAssembler.toModel(result, roleModelAssembler);
@@ -31,6 +41,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<RoleResponseDto> getRoleById(@PathVariable("id") Long id) {
         return roleService.findRoleById(id)
                 .map(roleModelAssembler::toModel)
@@ -39,12 +50,14 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<RoleResponseDto> updateRole(@PathVariable("id") Long id,
                                                       @RequestBody RoleRequestDto roleRequestDto) {
         return ResponseEntity.ok(roleModelAssembler.toModel(roleService.updateRole(id, roleRequestDto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN')")
     public ResponseEntity<String> deleteRoleById(@PathVariable("id") Long id) {
         roleService.deleteRoleById(id);
         return ResponseEntity.ok("Role deleted successfully.");
