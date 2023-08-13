@@ -25,10 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Validated
@@ -48,7 +50,8 @@ public class BookService {
     public ApiResponse getBooksFromApi(String api) {
         RestTemplate restTemplate = new RestTemplate();
         Book[] data = Objects.requireNonNull(restTemplate.getForObject(api, ApiResponse.class)).getData();
-        bookRepository.saveAll(List.of(data));
+        List<Book> books = Stream.of(data).peek(book -> book.setPrice(BigDecimal.ZERO)).collect(Collectors.toList());
+        bookRepository.saveAll(books);
         return restTemplate.getForObject(api, ApiResponse.class);
     }
 
