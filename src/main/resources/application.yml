@@ -15,3 +15,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: 'true'
     show-sql: 'true'
+  sql:
+    init:
+      data-locations:
+        - classpath:db/initial_data.sql
+      mode: always
+
