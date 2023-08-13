@@ -3,12 +3,14 @@ package com.library.persistence.entity;
 import com.library.persistence.entity.joinEntity.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "roles")
 @Data

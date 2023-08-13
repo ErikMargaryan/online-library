@@ -3,6 +3,7 @@ package com.library.persistence.entity;
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "purchase")
 @Data

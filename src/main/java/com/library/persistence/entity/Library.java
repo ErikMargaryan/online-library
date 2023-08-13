@@ -3,6 +3,7 @@ package com.library.persistence.entity;
 import com.library.persistence.entity.joinEntity.LibraryBook;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Entity
 @Table(name = "libraries")
 @Data

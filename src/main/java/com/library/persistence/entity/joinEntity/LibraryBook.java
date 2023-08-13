@@ -5,9 +5,11 @@ import com.library.persistence.entity.Library;
 import com.library.persistence.entity.composite.LibraryBookKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Table(name = "libraries_books")
 @Data
