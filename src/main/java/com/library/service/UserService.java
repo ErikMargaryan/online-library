@@ -7,7 +7,6 @@ import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
-import com.library.persistence.repository.RoleRepository;
 import com.library.persistence.repository.UserRepository;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -40,8 +39,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-
-    private final RoleRepository roleRepository;
 
     private final Mapper mapper;
 
@@ -111,13 +108,6 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
-        System.out.println("Attempting to delete user with ID: " + id);
-
-        try {
             userRepository.deleteById(id);
-            System.out.println("User with ID {} deleted successfully." + id);
-        } catch (Exception e) {
-            System.out.println("Error occurred while deleting user with ID: " + id + e);
-        }
     }
 }

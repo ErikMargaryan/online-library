@@ -11,7 +11,6 @@ import com.library.persistence.entity.composite.LibraryBookKey;
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import com.library.persistence.entity.joinEntity.LibraryBook;
 import com.library.persistence.repository.BookRepository;
-import com.library.persistence.repository.LibraryBookRepository;
 import com.library.persistence.repository.LibraryRepository;
 import com.library.persistence.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,8 +41,6 @@ public class BookService {
     private final LibraryRepository libraryRepository;
 
     private final UserRepository userRepository;
-
-    private final LibraryBookRepository libraryBookRepository;
 
     private final Mapper mapper;
 
@@ -119,7 +116,7 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    private boolean hasUserPurchasedBook(User user, Book book) {
+    boolean hasUserPurchasedBook(User user, Book book) {
         return user.getPurchases().stream()
                 .flatMap(purchase -> purchase.getBookPurchases().stream())
                 .map(BookPurchase::getBook)
