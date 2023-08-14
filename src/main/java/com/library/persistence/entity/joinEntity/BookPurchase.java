@@ -5,9 +5,11 @@ import com.library.persistence.entity.Purchase;
 import com.library.persistence.entity.composite.BookPurchaseKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Table(name = "books_purchases")
 @Data
