@@ -9,7 +9,6 @@ import com.library.persistence.entity.Purchase;
 import com.library.persistence.entity.User;
 import com.library.persistence.entity.composite.BookPurchaseKey;
 import com.library.persistence.entity.joinEntity.BookPurchase;
-import com.library.persistence.entity.joinEntity.LibraryBook;
 import com.library.persistence.repository.BookRepository;
 import com.library.persistence.repository.LibraryRepository;
 import com.library.persistence.repository.UserRepository;

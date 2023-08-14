@@ -1,24 +1,13 @@
 package com.library.persistence.repository;
 
 import com.library.BigDecimalUtils;
-import com.library.dto.response.LibraryResponseDto;
-import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.Book;
-import com.library.persistence.entity.Library;
-import com.library.persistence.entity.User;
 import com.library.testdata.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class BookRepositoryTest {
