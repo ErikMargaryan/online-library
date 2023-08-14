@@ -1,7 +1,6 @@
 package com.library.service;
 
 import com.library.dto.mapper.Mapper;
-import com.library.dto.request.UserRequestDto;
 import com.library.dto.request.UserRequestDtoForUpdate;
 import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.User;

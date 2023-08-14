@@ -1,6 +1,5 @@
 package com.library.rest.controller;
 
-import com.library.dto.request.UserRequestDto;
 import com.library.dto.request.UserRequestDtoForUpdate;
 import com.library.dto.response.UserResponseDto;
 import com.library.rest.assembler.UserModelAssembler;
