@@ -131,6 +131,16 @@ public class TestData {
                 .build();
     }
 
+    public static UserRequestDtoForUpdate userRequestDataForUpdate() {
+        return UserRequestDtoForUpdate.builder()
+                .firstName("Erik")
+                .lastName("Margaryan")
+                .phone("+37498490961")
+                .password("super")
+                .favoriteGenres(List.of("genre1", "genre2"))
+                .build();
+    }
+
     public static UserResponseDto userResponseData() {
         return UserResponseDto.builder()
                 .firstName("Erik")

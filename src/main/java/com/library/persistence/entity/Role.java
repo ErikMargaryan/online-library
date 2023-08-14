@@ -18,13 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "role-id-generator")
+    @SequenceGenerator(name = "role-id-generator", sequenceName = "my_sequence_name", initialValue = 4)
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserRole> userRoles = new ArrayList<>();
 }

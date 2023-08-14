@@ -3,6 +3,7 @@ package com.library.service;
 import com.library.csvData.UserCSVModel;
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.UserRequestDto;
+import com.library.dto.request.UserRequestDtoForUpdate;
 import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,13 +42,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     private final Mapper mapper;
 
+    @Transactional
     public Page<UserResponseDto> findAllUsers(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         List<UserResponseDto> userResponseDtos = users.stream()
                 .map(mapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
         return new PageImpl<>(userResponseDtos, pageable, users.getTotalElements());
     }
     @Transactional
@@ -96,12 +101,17 @@ public class UserService {
         return userOptional.map(mapper::toDto);
     }
 
-    public UserResponseDto updateUser(Long id, @Valid UserRequestDto userDto) {
-        userRepository.findById(id)
+    public UserResponseDto updateUser(Long id, @Valid UserRequestDtoForUpdate userDto) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
         User updatedUser = mapper.toEntity(userDto);
         updatedUser.setId(id);
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        updatedUser.setUserRoles(user.getUserRoles());
+        updatedUser.setPurchases(user.getPurchases());
+        updatedUser.setCreditCards(user.getCreditCards());
 
         User savedUser = userRepository.save(updatedUser);
         return mapper.toDto(savedUser);

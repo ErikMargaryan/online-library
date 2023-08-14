@@ -28,7 +28,7 @@ public class UserRequestDto implements Serializable {
         @Schema(example = "+37498490961")
         @NotBlank(message = "Phone may not be empty, null or blank")
         private String phone;
-        @Schema(example = "erickmargarian@gmail.com")
+        @Schema(example = "test@gmail.com")
         @NotBlank(message = "Email may not be empty, null or blank")
         @Email(message = "Email should be a valid email")
         @UniqueEmailValidation(message = "Email is taken!")

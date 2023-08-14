@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class LibraryService {
 
     public LibraryResponseDto createLibrary(@Valid LibraryRequestDto libraryRequestDto) {
         Library library = mapper.toEntity(libraryRequestDto);
+        library.setLibraryBooks(new ArrayList<>());
         Library savedLibrary = libraryRepository.save(library);
         return mapper.toDto(savedLibrary);
     }

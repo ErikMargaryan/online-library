@@ -2,6 +2,7 @@ package com.library.service;
 
 import com.library.dto.mapper.Mapper;
 import com.library.dto.request.UserRequestDto;
+import com.library.dto.request.UserRequestDtoForUpdate;
 import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.User;
 import com.library.persistence.repository.UserRepository;
@@ -77,7 +78,7 @@ class UserServiceTest {
 
     @Test
     void testUpdateUser() {
-        UserRequestDto userDto = TestData.userRequestData();
+        UserRequestDtoForUpdate userDto = TestData.userRequestDataForUpdate();
         User user = TestData.userData();
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(mapper.toEntity(userDto)).thenReturn(user);

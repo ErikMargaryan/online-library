@@ -18,6 +18,8 @@ public interface Mapper {
 
     User toEntity(UserRequestDto dto);
 
+    User toEntity(UserRequestDtoForUpdate dto);
+
     @Mapping(source = "userRoles", target = "roles", qualifiedByName = "mapUserRolesToListRoleResponseDto")
     UserResponseDto toDto(User entity);
 

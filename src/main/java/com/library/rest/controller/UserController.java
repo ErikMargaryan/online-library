@@ -1,6 +1,7 @@
 package com.library.rest.controller;
 
 import com.library.dto.request.UserRequestDto;
+import com.library.dto.request.UserRequestDtoForUpdate;
 import com.library.dto.response.UserResponseDto;
 import com.library.rest.assembler.UserModelAssembler;
 import com.library.service.UserService;
@@ -61,7 +62,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") Long id, @RequestBody UserRequestDto userDto) {
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable("id") Long id, @RequestBody UserRequestDtoForUpdate userDto) {
         return ResponseEntity.ok(userModelAssembler.toModel(userService.updateUser(id, userDto)));
     }
 

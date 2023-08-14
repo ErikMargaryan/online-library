@@ -58,14 +58,14 @@ public class AuthController {
     public ResponseEntity<String> register(@Valid @RequestBody UserRequestDto userRequestDto) {
         User user = mapper.toEntity(userRequestDto);
         user.setPassword(passwordEncoder.encode((userRequestDto.getPassword())));
-        userRepository.save(user);
-        if (user.getUserRoles().isEmpty()) {
+        User savedUser = userRepository.save(user);
+        if (savedUser.getUserRoles() == null) {
             Long roleIdOfUSER = roleRepository.findIdByRoleName("USER");
             UserRoleKey userRoleKey = new UserRoleKey();
-            userRoleKey.setUserId(user.getId());
+            userRoleKey.setUserId(savedUser.getId());
             userRoleKey.setRoleId(roleIdOfUSER);
             Role role = roleRepository.findById(roleIdOfUSER).orElseThrow();
-            UserRole userRole = new UserRole(userRoleKey, user, role);
+            UserRole userRole = new UserRole(userRoleKey, savedUser, role);
             userRoleRepository.save(userRole);
         }
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);

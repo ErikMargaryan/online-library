@@ -25,6 +25,5 @@ public class LibraryRequestDto implements Serializable {
     @NotBlank(message = "Phone Number may not be empty, null or blank")
     private String phoneNumber;
     @Schema(example = "https://NPUA.com/")
-    @NotBlank(message = "Website may not be empty, null or blank")
     private URL website;
 }
