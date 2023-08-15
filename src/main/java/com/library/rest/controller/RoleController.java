@@ -5,7 +5,7 @@ import com.library.dto.response.RoleResponseDto;
 import com.library.rest.assembler.RoleModelAssembler;
 import com.library.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -28,15 +28,15 @@ public class RoleController {
     @PostMapping
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<RoleResponseDto> addRole(@RequestBody RoleRequestDto roleRequestDto) {
-        RoleResponseDto roleResponseDto = roleService.createRole(roleRequestDto);
+        val roleResponseDto = roleService.createRole(roleRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(roleModelAssembler.toModel(roleResponseDto));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<RoleResponseDto>> getAllRoles(Pageable pageable) {
-        Page<RoleResponseDto> result = roleService.findAllRoles(pageable);
-        PagedModel<RoleResponseDto> model = pagedResourcesAssembler.toModel(result, roleModelAssembler);
+        val result = roleService.findAllRoles(pageable);
+        val model = pagedResourcesAssembler.toModel(result, roleModelAssembler);
         return ResponseEntity.ok(model);
     }
 

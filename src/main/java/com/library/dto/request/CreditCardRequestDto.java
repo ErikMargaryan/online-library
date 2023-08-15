@@ -24,7 +24,6 @@ public class CreditCardRequestDto implements Serializable {
     @Future(message = "Expiration Date may not be past")
     private LocalDate expirationDate;
     @Schema(example = "123")
-    @NotBlank(message = "CVV may not be empty, null or blank")
     @Digits(integer = 3, message = "CVV Number must have exactly 3 digits", fraction = 0)
     private Integer cvv;
 }

@@ -1,8 +1,8 @@
 package com.library.persistence.repository;
 
 import com.library.BigDecimalUtils;
-import com.library.persistence.entity.Book;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +20,10 @@ class BookRepositoryTest {
 
     @Test
     void shouldFindEntityById() {
-        Book book = TestData.bookData();
+        val book = TestData.bookData();
         bookRepository.save(book);
 
-        Book result = bookRepository.findById(book.getId()).orElseThrow();
+        val result = bookRepository.findById(book.getId()).orElseThrow();
 
         assertEquals(book.getTitle(), result.getTitle());
         assertEquals(book.getAuthor(), result.getAuthor());

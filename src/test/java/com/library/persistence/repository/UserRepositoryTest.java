@@ -1,8 +1,8 @@
 package com.library.persistence.repository;
 
-import com.library.persistence.entity.User;
 import com.library.testdata.TestData;
 import jakarta.transaction.Transactional;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,11 +18,11 @@ class UserRepositoryTest {
     @Test
     @Transactional
     void shouldFindEntityById() {
-        User entity = TestData.userData();
+        val entity = TestData.userData();
 
         userRepository.save(entity);
 
-        User result = userRepository.findById(entity.getId()).orElseThrow();
+        val result = userRepository.findById(entity.getId()).orElseThrow();
 
         assertEquals(entity.getFirstName(), result.getFirstName());
         assertEquals(entity.getLastName(), result.getLastName());

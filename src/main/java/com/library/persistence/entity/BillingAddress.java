@@ -23,7 +23,7 @@ public class BillingAddress {
     private String address;
     @Column(name = "country")
     private String country;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "id")
     private User user;

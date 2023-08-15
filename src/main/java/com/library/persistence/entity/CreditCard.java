@@ -27,7 +27,7 @@ public class CreditCard {
     private LocalDate expirationDate;
     @Column(name = "cvv")
     private Integer cvv;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "creditCard", cascade = CascadeType.ALL)

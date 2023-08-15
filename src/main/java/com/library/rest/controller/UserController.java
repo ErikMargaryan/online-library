@@ -5,7 +5,7 @@ import com.library.dto.response.UserResponseDto;
 import com.library.rest.assembler.UserModelAssembler;
 import com.library.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -45,8 +45,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<UserResponseDto>> getUsers(@PageableDefault(sort = {"firstName", "lastName"},
             direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<UserResponseDto> result = userService.findAllUsers(pageable);
-        PagedModel<UserResponseDto> model = pagedResourcesAssembler.toModel(result, userModelAssembler);
+        val result = userService.findAllUsers(pageable);
+        val model = pagedResourcesAssembler.toModel(result, userModelAssembler);
         return ResponseEntity.ok(model);
     }
 

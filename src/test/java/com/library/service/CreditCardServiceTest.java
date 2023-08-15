@@ -1,24 +1,21 @@
 package com.library.service;
 
 import com.library.dto.mapper.Mapper;
-import com.library.dto.request.CreditCardRequestDto;
 import com.library.dto.response.CreditCardResponseDto;
 import com.library.persistence.entity.CreditCard;
-import com.library.persistence.entity.User;
 import com.library.persistence.repository.CreditCardRepository;
 import com.library.persistence.repository.UserRepository;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,16 +39,16 @@ class CreditCardServiceTest {
 
     @Test
     void testCreateCreditCard() {
-        CreditCardRequestDto creditCardRequestDto = TestData.creditCardRequestData();
-        User user = TestData.userData();
+        val creditCardRequestDto = TestData.creditCardRequestData();
+        val user = TestData.userData();
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        CreditCard creditCard = TestData.creditCardData();
+        val creditCard = TestData.creditCardData();
         when(mapper.toEntity(creditCardRequestDto)).thenReturn(creditCard);
         when(creditCardRepository.save(creditCard)).thenReturn(creditCard);
-        CreditCardResponseDto expectedResponseDto = TestData.creditCardResponseData();
+        val expectedResponseDto = TestData.creditCardResponseData();
         when(mapper.toDto(creditCard)).thenReturn(expectedResponseDto);
 
-        CreditCardResponseDto actualResponseDto = creditCardService.createCreditCard(anyLong(), creditCardRequestDto);
+        val actualResponseDto = creditCardService.createCreditCard(anyLong(), creditCardRequestDto);
 
         assertEquals(expectedResponseDto, actualResponseDto);
         verify(userRepository, times(1)).findById(anyLong());
@@ -61,14 +58,14 @@ class CreditCardServiceTest {
 
     @Test
     void testFindAllCreditCards() {
-        List<CreditCard> creditCardList = new ArrayList<>();
+        val creditCardList = new ArrayList<CreditCard>();
         creditCardList.add(TestData.creditCardData());
-        Page<CreditCard> creditCardPage = new PageImpl<>(creditCardList);
+        val creditCardPage = new PageImpl<>(creditCardList);
         when(creditCardRepository.findAll(any(Pageable.class))).thenReturn(creditCardPage);
         CreditCardResponseDto responseDto = TestData.creditCardResponseData();
         when(mapper.toDto(any(CreditCard.class))).thenReturn(responseDto);
 
-        Page<CreditCardResponseDto> actualResponsePage = creditCardService.findAllCreditCards(Pageable.unpaged());
+        val actualResponsePage = creditCardService.findAllCreditCards(Pageable.unpaged());
 
         assertEquals(1, actualResponsePage.getTotalElements());
         assertEquals(responseDto, actualResponsePage.getContent().get(0));
@@ -78,12 +75,12 @@ class CreditCardServiceTest {
 
     @Test
     void testFindCreditCardById() {
-        CreditCard creditCard = TestData.creditCardData();
+        val creditCard = TestData.creditCardData();
         when(creditCardRepository.findById(anyLong())).thenReturn(Optional.of(creditCard));
-        CreditCardResponseDto responseDto = TestData.creditCardResponseData();
+        val responseDto = TestData.creditCardResponseData();
         when(mapper.toDto(creditCard)).thenReturn(responseDto);
 
-        Optional<CreditCardResponseDto> actualResponseOptional = creditCardService.findCreditCardById(anyLong());
+        val actualResponseOptional = creditCardService.findCreditCardById(anyLong());
 
         assertTrue(actualResponseOptional.isPresent());
         assertEquals(responseDto, actualResponseOptional.get());
@@ -93,15 +90,15 @@ class CreditCardServiceTest {
 
     @Test
     void testUpdateCreditCard() {
-        CreditCardRequestDto creditCardRequestDto = TestData.creditCardRequestData();
-        CreditCard creditCard = TestData.creditCardData();
+        val creditCardRequestDto = TestData.creditCardRequestData();
+        val creditCard = TestData.creditCardData();
         when(creditCardRepository.findById(anyLong())).thenReturn(Optional.of(creditCard));
         when(mapper.toEntity(creditCardRequestDto)).thenReturn(creditCard);
         when(creditCardRepository.save(creditCard)).thenReturn(creditCard);
-        CreditCardResponseDto expectedResponseDto = TestData.creditCardResponseData();
+        val expectedResponseDto = TestData.creditCardResponseData();
         when(mapper.toDto(creditCard)).thenReturn(expectedResponseDto);
 
-        CreditCardResponseDto actualResponseDto = creditCardService.updateCreditCard(anyLong(), creditCardRequestDto);
+        val actualResponseDto = creditCardService.updateCreditCard(anyLong(), creditCardRequestDto);
 
         assertEquals(expectedResponseDto, actualResponseDto);
         verify(creditCardRepository, times(1)).findById(anyLong());

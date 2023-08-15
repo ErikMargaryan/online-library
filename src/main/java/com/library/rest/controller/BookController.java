@@ -6,7 +6,7 @@ import com.library.dto.response.BookResponseDto;
 import com.library.rest.assembler.BookModelAssembler;
 import com.library.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -34,7 +34,7 @@ public class BookController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BookResponseDto> addBook(@PathVariable("libraryId") Long libraryId,
                                                    @RequestBody BookRequestDto bookRequestDto) {
-        BookResponseDto bookResponseDto = bookService.createBook(libraryId, bookRequestDto);
+        val bookResponseDto = bookService.createBook(libraryId, bookRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(bookModelAssembler.toModel(bookResponseDto));
     }
 
@@ -49,8 +49,8 @@ public class BookController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<BookResponseDto>> getBooks(@PageableDefault(sort = {"published"},
             direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<BookResponseDto> result = bookService.findAllBooks(pageable);
-        PagedModel<BookResponseDto> model = pagedResourcesAssembler.toModel(result, bookModelAssembler);
+        val result = bookService.findAllBooks(pageable);
+        val model = pagedResourcesAssembler.toModel(result, bookModelAssembler);
         return ResponseEntity.ok(model);
     }
 
@@ -66,7 +66,7 @@ public class BookController {
     @GetMapping("/suggest-to-user/{userId}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<List<BookResponseDto>> getBookSuggestionsToUser(@PathVariable("userId") Long userId) {
-        List<BookResponseDto> bookResponseDtos = bookService.suggestBooksForUser(userId);
+        val bookResponseDtos = bookService.suggestBooksForUser(userId);
         return ResponseEntity.ok(bookResponseDtos.stream()
                 .map(bookModelAssembler::toModel)
                 .toList());
@@ -76,7 +76,7 @@ public class BookController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BookResponseDto> updateBook(@PathVariable("id") Long id,
                                                       @RequestBody BookRequestDto bookRequestDto) {
-        BookResponseDto bookResponseDto = bookService.updateBook(id, bookRequestDto);
+        val bookResponseDto = bookService.updateBook(id, bookRequestDto);
         return ResponseEntity.ok(bookModelAssembler.toModel(bookResponseDto));
     }
 

@@ -37,7 +37,7 @@ public class BookRequestDto implements Serializable {
     @Schema(example = "http://image_url.com/")
     private URL image;
     @Schema(example = "2003-05-08")
-    @NotNull(message = "Published may not be empty, null or blank")
+    @NotNull(message = "Published may not be null")
     private LocalDate published;
     @NotBlank(message = "Publisher may not be empty, null or blank")
     @Schema(example = "Erik")

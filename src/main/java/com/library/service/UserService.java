@@ -8,12 +8,12 @@ import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
 import com.library.persistence.repository.UserRepository;
-import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,18 +46,18 @@ public class UserService {
 
     @Transactional
     public Page<UserResponseDto> findAllUsers(Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
-        List<UserResponseDto> userResponseDtos = users.stream()
+        val users = userRepository.findAll(pageable);
+        val userResponseDtos = users.stream()
                 .map(mapper::toDto)
                 .toList();
         return new PageImpl<>(userResponseDtos, pageable, users.getTotalElements());
     }
     @Transactional
     public void parseAndSaveCSV(MultipartFile file) throws IOException {
-        List<UserCSVModel> userList = new ArrayList<>();
+        List<UserCSVModel> userList;
 
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            CsvToBean<UserCSVModel> csvToBean = new CsvToBeanBuilder<UserCSVModel>(reader)
+            val csvToBean = new CsvToBeanBuilder<UserCSVModel>(reader)
                     .withType(UserCSVModel.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
@@ -67,28 +66,31 @@ public class UserService {
         }
 
         for (UserCSVModel userData : userList) {
-            User user = new User();
-            String[] names = userData.getName().split(" ");
-            String firstName = Arrays.stream(names).findFirst().get();
-            user.setFirstName(firstName);
-            String lastName = Arrays.stream(names).skip(1).collect(Collectors.joining(" "));
-            user.setLastName(lastName);
-            user.setPhone(userData.getPhone());
-            user.setEmail(userData.getEmail());
-            user.setPassword(userData.getPassword());
+            val names = userData.getName().split(" ");
+            val firstName = Arrays.stream(names).findFirst().get();
+            val lastName = Arrays.stream(names).skip(1).collect(Collectors.joining(" "));
+            val user = User.builder()
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .phone(userData.getPhone())
+                    .email(userData.getEmail())
+                    .password(passwordEncoder.encode(userData.getPassword()))
+                    .build();
 
-            BillingAddress address = new BillingAddress();
-            address.setAddress(userData.getAddress());
-            address.setPostalZip(Integer.parseInt(userData.getPostalZip()));
-            address.setCountry(userData.getCountry());
-            address.setUser(user);
+            val address = BillingAddress.builder()
+                    .address(userData.getAddress())
+                    .postalZip(Integer.parseInt(userData.getPostalZip()))
+                    .country(userData.getCountry())
+                    .user(user)
+                    .build();
             user.setAddress(address);
 
-            CreditCard creditCard = new CreditCard();
-            creditCard.setPan(userData.getPan());
-            creditCard.setExpirationDate(LocalDate.parse(userData.getExpdate(), DateTimeFormatter.ofPattern("d-MMM-yy")));
-            creditCard.setCvv(Integer.parseInt(userData.getCvv()));
-            creditCard.setUser(user);
+            val creditCard = CreditCard.builder()
+                    .pan(userData.getPan())
+                    .expirationDate(LocalDate.parse(userData.getExpdate(), DateTimeFormatter.ofPattern("d-MMM-yy")))
+                    .cvv(Integer.parseInt(userData.getCvv()))
+                    .user(user)
+                    .build();
             user.getCreditCards().add(creditCard);
 
             userRepository.save(user);
@@ -96,23 +98,24 @@ public class UserService {
     }
 
     public Optional<UserResponseDto> findUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+        val userOptional = userRepository.findById(id);
         return userOptional.map(mapper::toDto);
     }
 
     public UserResponseDto updateUser(Long id, @Valid UserRequestDtoForUpdate userDto) {
-        User user = userRepository.findById(id)
+        val user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
-        User updatedUser = mapper.toEntity(userDto);
+        val updatedUser = mapper.toEntity(userDto);
         updatedUser.setId(id);
         updatedUser.setEmail(user.getEmail());
-        updatedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        updatedUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         updatedUser.setUserRoles(user.getUserRoles());
         updatedUser.setPurchases(user.getPurchases());
         updatedUser.setCreditCards(user.getCreditCards());
+        updatedUser.setAddress(user.getAddress());
 
-        User savedUser = userRepository.save(updatedUser);
+        val savedUser = userRepository.save(updatedUser);
         return mapper.toDto(savedUser);
     }
 

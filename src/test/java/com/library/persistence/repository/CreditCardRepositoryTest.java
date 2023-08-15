@@ -1,7 +1,7 @@
 package com.library.persistence.repository;
 
-import com.library.persistence.entity.CreditCard;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +16,10 @@ class CreditCardRepositoryTest {
 
     @Test
     void shouldFindEntityById() {
-        CreditCard creditCard = TestData.creditCardData();
+        val creditCard = TestData.creditCardData();
         creditCardRepository.save(creditCard);
 
-        CreditCard result = creditCardRepository.findById(creditCard.getId()).orElseThrow();
+        val result = creditCardRepository.findById(creditCard.getId()).orElseThrow();
 
         assertEquals(creditCard.getPan(), result.getPan());
         assertEquals(creditCard.getExpirationDate(), result.getExpirationDate());

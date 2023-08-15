@@ -6,7 +6,6 @@ import com.library.persistence.entity.*;
 import com.library.persistence.entity.joinEntity.BookPurchase;
 import com.library.persistence.entity.joinEntity.LibraryBook;
 import com.library.persistence.entity.joinEntity.UserRole;
-import org.mapstruct.Context;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
@@ -73,9 +72,11 @@ public interface Mapper {
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "creditCard.id", target = "creditCardId")
-    @Mapping(target = "bookIds", source = "bookPurchases")
-    PurchaseResponseDto toDto(Purchase entity, @Context List<Long> bookIds);
+    @Mapping(source = "date", target = "date")
+    @Mapping(target = "bookIds", source = "bookPurchases", qualifiedByName = "mapBookPurchasesToBookIds")
+    PurchaseResponseDto toDto(Purchase entity);
 
+    @Named("mapBookPurchasesToBookIds")
     default List<Long> mapBookPurchasesToBookIds(List<BookPurchase> bookPurchases) {
         return bookPurchases.stream()
                 .map(bookPurchase -> bookPurchase.getBook().getId())

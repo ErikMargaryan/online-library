@@ -1,8 +1,8 @@
 package com.library.persistence.repository;
 
 import com.library.BigDecimalUtils;
-import com.library.persistence.entity.Purchase;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +17,10 @@ class PurchaseRepositoryTest {
 
     @Test
     void shouldFindEntityById() {
-        Purchase purchase = TestData.purchaseData();
+        val purchase = TestData.purchaseData();
         purchaseRepository.save(purchase);
 
-        Purchase result = purchaseRepository.findById(purchase.getId()).orElseThrow();
+        val result = purchaseRepository.findById(purchase.getId()).orElseThrow();
 
         assertEquals(purchase.getDate(), result.getDate());
         assertEquals(BigDecimalUtils.scaleBigDecimal(purchase.getTotalPrice(), 2),

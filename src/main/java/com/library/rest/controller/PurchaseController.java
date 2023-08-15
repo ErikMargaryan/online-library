@@ -5,7 +5,7 @@ import com.library.dto.response.PurchaseResponseDto;
 import com.library.rest.assembler.PurchaseModelAssembler;
 import com.library.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -29,15 +29,15 @@ public class PurchaseController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PurchaseResponseDto> addPurchase(@RequestBody PurchaseRequestDto purchaseRequestDto) {
-        PurchaseResponseDto purchaseResponseDto = purchaseService.createPurchase(purchaseRequestDto);
+        val purchaseResponseDto = purchaseService.createPurchase(purchaseRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(purchaseModelAssembler.toModel(purchaseResponseDto));
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<PagedModel<PurchaseResponseDto>> getAllPurchases(Pageable pageable) {
-        Page<PurchaseResponseDto> result = purchaseService.findAllPurchases(pageable);
-        PagedModel<PurchaseResponseDto> model = pagedResourcesAssembler.toModel(result, purchaseModelAssembler);
+        val result = purchaseService.findAllPurchases(pageable);
+        val model = pagedResourcesAssembler.toModel(result, purchaseModelAssembler);
         return ResponseEntity.ok(model);
     }
 
@@ -45,8 +45,8 @@ public class PurchaseController {
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<PagedModel<PurchaseResponseDto>> getPurchasesByUserId(@PathVariable("userId") Long userId,
                                                                                 Pageable pageable) {
-        Page<PurchaseResponseDto> purchaseByUserId = purchaseService.findPurchaseByUserId(userId, pageable);
-        PagedModel<PurchaseResponseDto> model = pagedResourcesAssembler.toModel(purchaseByUserId, purchaseModelAssembler);
+        val purchaseByUserId = purchaseService.findPurchaseByUserId(userId, pageable);
+        val model = pagedResourcesAssembler.toModel(purchaseByUserId, purchaseModelAssembler);
         return ResponseEntity.ok(model);
     }
 

@@ -5,7 +5,7 @@ import com.library.dto.response.BillingAddressResponseDto;
 import com.library.rest.assembler.BillingAddressModelAssembler;
 import com.library.service.BillingAddressService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -29,7 +29,7 @@ public class BillingAddressController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<BillingAddressResponseDto> addBillingAddress(@PathVariable("userId") Long userId,
                                                                        @RequestBody BillingAddressRequestDto billingAddressRequestDto) {
-        BillingAddressResponseDto billingAddressResponseDto =
+        val billingAddressResponseDto =
                 billingAddressService.createBillingAddress(userId, billingAddressRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(billingAddressModelAssembler.toModel(billingAddressResponseDto));
     }
@@ -37,8 +37,8 @@ public class BillingAddressController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<BillingAddressResponseDto>> getAllBillingAddresses(Pageable pageable) {
-        Page<BillingAddressResponseDto> result = billingAddressService.findAllBillingAddresses(pageable);
-        PagedModel<BillingAddressResponseDto> model = pagedResourcesAssembler.toModel(result, billingAddressModelAssembler);
+        val result = billingAddressService.findAllBillingAddresses(pageable);
+        val model = pagedResourcesAssembler.toModel(result, billingAddressModelAssembler);
         return ResponseEntity.ok(model);
     }
 

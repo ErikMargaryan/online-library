@@ -1,11 +1,9 @@
 package com.library.service;
 
 import com.library.dto.mapper.Mapper;
-import com.library.dto.request.UserRoleKeyDto;
-import com.library.dto.response.UserRoleKeyResponseDto;
-import com.library.persistence.entity.joinEntity.UserRole;
 import com.library.persistence.repository.UserRoleRepository;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,14 +27,14 @@ class UserRoleServiceTest {
 
     @Test
     void testAssignRoleToUser() {
-        UserRoleKeyDto userRoleKeyDto = TestData.userRoleKeyDtoData();
-        UserRole userRole = TestData.userRoleData();
+        val userRoleKeyDto = TestData.userRoleKeyDtoData();
+        val userRole = TestData.userRoleData();
         when(mapper.toEntity(userRoleKeyDto)).thenReturn(userRole);
         when(userRoleRepository.save(userRole)).thenReturn(userRole);
-        UserRoleKeyResponseDto expectedResponseDto = TestData.userRoleKeyResponseData();
+        val expectedResponseDto = TestData.userRoleKeyResponseData();
         when(mapper.toDto(userRole)).thenReturn(expectedResponseDto);
 
-        UserRoleKeyResponseDto actualResponseDto = userRoleService.assignRoleToUser(userRoleKeyDto);
+        val actualResponseDto = userRoleService.assignRoleToUser(userRoleKeyDto);
 
         assertEquals(expectedResponseDto, actualResponseDto);
         verify(userRoleRepository, times(1)).save(userRole);

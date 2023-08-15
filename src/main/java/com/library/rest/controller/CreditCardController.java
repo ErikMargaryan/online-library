@@ -5,7 +5,7 @@ import com.library.dto.response.CreditCardResponseDto;
 import com.library.rest.assembler.CreditCardModelAssembler;
 import com.library.service.CreditCardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -29,15 +29,15 @@ public class CreditCardController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<CreditCardResponseDto> addCreditCard(@PathVariable("userId") Long userId,
                                                @RequestBody CreditCardRequestDto creditCardDto) {
-        CreditCardResponseDto creditCardResponseDto = creditCardService.createCreditCard(userId, creditCardDto);
+        val creditCardResponseDto = creditCardService.createCreditCard(userId, creditCardDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creditCardModelAssembler.toModel(creditCardResponseDto));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<CreditCardResponseDto>> getAllCreditCards(Pageable pageable) {
-        Page<CreditCardResponseDto> result = creditCardService.findAllCreditCards(pageable);
-        PagedModel<CreditCardResponseDto> model = pagedResourcesAssembler.toModel(result, creditCardModelAssembler);
+        val result = creditCardService.findAllCreditCards(pageable);
+        val model = pagedResourcesAssembler.toModel(result, creditCardModelAssembler);
         return ResponseEntity.ok(model);
     }
 

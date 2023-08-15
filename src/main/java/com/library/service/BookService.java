@@ -5,7 +5,6 @@ import com.library.dto.request.BookRequestDto;
 import com.library.dto.response.ApiResponse;
 import com.library.dto.response.BookResponseDto;
 import com.library.persistence.entity.Book;
-import com.library.persistence.entity.Library;
 import com.library.persistence.entity.User;
 import com.library.persistence.entity.composite.LibraryBookKey;
 import com.library.persistence.entity.joinEntity.BookPurchase;
@@ -17,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +28,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -45,57 +44,60 @@ public class BookService {
     private final Mapper mapper;
 
     public ApiResponse getBooksFromApi(String api) {
-        RestTemplate restTemplate = new RestTemplate();
-        Book[] data = Objects.requireNonNull(restTemplate.getForObject(api, ApiResponse.class)).getData();
-        List<Book> books = Stream.of(data).peek(book -> book.setPrice(BigDecimal.ZERO)).collect(Collectors.toList());
+        val restTemplate = new RestTemplate();
+        val data = Objects.requireNonNull(restTemplate.getForObject(api, ApiResponse.class)).getData();
+        val books = Stream.of(data).peek(book -> book.setPrice(BigDecimal.ZERO)).toList();
         bookRepository.saveAll(books);
         return restTemplate.getForObject(api, ApiResponse.class);
     }
 
     @Transactional
     public BookResponseDto createBook(Long libraryId, @Valid BookRequestDto bookRequestDto) {
-        Library library = libraryRepository.findById(libraryId)
+        val library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new EntityNotFoundException("Library not found with id: " + libraryId));
 
-        Book book = mapper.toEntity(bookRequestDto);
+        val book = mapper.toEntity(bookRequestDto);
         bookRepository.save(book);
 
-        LibraryBookKey libraryBookKey = new LibraryBookKey();
-        libraryBookKey.setLibraryId(library.getId());
-        libraryBookKey.setBookId(book.getId());
-        LibraryBook libraryBook = new LibraryBook();
-        libraryBook.setId(libraryBookKey);
-        libraryBook.setBook(book);
-        libraryBook.setLibrary(library);
+        val libraryBookKey = LibraryBookKey.builder()
+                .libraryId(library.getId())
+                .bookId(book.getId())
+                .build();
+        val libraryBook = LibraryBook.builder()
+                .id(libraryBookKey)
+                .book(book)
+                .library(library)
+                .build();
 
+        // implicit saving like (repo.save(...))
         library.getLibraryBooks().add(libraryBook);
 
-        BookResponseDto bookResponseDto = mapper.toDto(book);
-        return bookResponseDto;
+        return mapper.toDto(book);
     }
 
     public Page<BookResponseDto> findAllBooks(Pageable pageable) {
-        Page<Book> books = bookRepository.findAll(pageable);
-        List<BookResponseDto> bookResponseDtos = books.stream()
+        val books = bookRepository.findAll(pageable);
+        val bookResponseDtos = books.stream()
                 .map(mapper::toDto)
                 .toList();
         return new PageImpl<>(bookResponseDtos, pageable, books.getTotalElements());
     }
+
     public Optional<BookResponseDto> findBookById(Long id) {
-        Optional<Book> bookOptional = bookRepository.findById(id);
+        val bookOptional = bookRepository.findById(id);
         return bookOptional.map(mapper::toDto);
     }
 
     public BookResponseDto updateBook(Long id, @Valid BookRequestDto bookRequestDto) {
-        Book book = bookRepository.findById(id)
+        val book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + id));
 
-        Book updatedBook = mapper.toEntity(bookRequestDto);
+        val updatedBook = mapper.toEntity(bookRequestDto);
         updatedBook.setId(id);
         updatedBook.setLibraryBooks(book.getLibraryBooks());
         updatedBook.setBookPurchases(book.getBookPurchases());
 
-        Book savedBook = bookRepository.save(updatedBook);
+        val savedBook = bookRepository.save(updatedBook);
         return mapper.toDto(savedBook);
     }
 
@@ -104,16 +106,16 @@ public class BookService {
     }
 
     public List<BookResponseDto> suggestBooksForUser(Long userId) {
-        User user = userRepository.findById(userId)
+        val user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        List<String> userFavoriteGenres = user.getFavoriteGenres();
-        List<Book> booksByGenres = bookRepository.getBookByGenres(userFavoriteGenres);
-        List<Book> suggestedBooks = booksByGenres.stream()
+        val userFavoriteGenres = user.getFavoriteGenres();
+        val booksByGenres = bookRepository.getBookByGenres(userFavoriteGenres);
+        val suggestedBooks = booksByGenres.stream()
                 .filter(book -> !hasUserPurchasedBook(user, book))
                 .toList();
         return suggestedBooks.stream()
                 .map(mapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     boolean hasUserPurchasedBook(User user, Book book) {

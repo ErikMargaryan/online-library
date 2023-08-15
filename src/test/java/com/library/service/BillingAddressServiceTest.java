@@ -1,24 +1,20 @@
 package com.library.service;
 
 import com.library.dto.mapper.Mapper;
-import com.library.dto.request.BillingAddressRequestDto;
-import com.library.dto.response.BillingAddressResponseDto;
 import com.library.persistence.entity.BillingAddress;
-import com.library.persistence.entity.User;
 import com.library.persistence.repository.BillingAddressRepository;
 import com.library.persistence.repository.UserRepository;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,16 +39,16 @@ class BillingAddressServiceTest {
 
     @Test
     void testCreateBillingAddress() {
-        BillingAddressRequestDto billingAddressRequestDto = TestData.billingAddressRequestData();
-        User user = TestData.userData();
+        val billingAddressRequestDto = TestData.billingAddressRequestData();
+        val user = TestData.userData();
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        BillingAddress billingAddress = TestData.billingAddressData();
+        val billingAddress = TestData.billingAddressData();
         when(mapper.toEntity(billingAddressRequestDto)).thenReturn(billingAddress);
         when(billingAddressRepository.save(billingAddress)).thenReturn(billingAddress);
-        BillingAddressResponseDto expectedResponseDto = TestData.billingAddressResponseData();
+        val expectedResponseDto = TestData.billingAddressResponseData();
         when(mapper.toDto(billingAddress)).thenReturn(expectedResponseDto);
 
-        BillingAddressResponseDto actualResponseDto = billingAddressService.createBillingAddress(anyLong(), billingAddressRequestDto);
+        val actualResponseDto = billingAddressService.createBillingAddress(anyLong(), billingAddressRequestDto);
 
         assertEquals(expectedResponseDto, actualResponseDto);
         verify(userRepository, times(1)).findById(anyLong());
@@ -62,14 +58,14 @@ class BillingAddressServiceTest {
 
     @Test
     void testFindAllBillingAddresses() {
-        List<BillingAddress> billingAddressList = new ArrayList<>();
+        val billingAddressList = new ArrayList<BillingAddress>();
         billingAddressList.add(TestData.billingAddressData());
-        Page<BillingAddress> billingAddressPage = new PageImpl<>(billingAddressList);
+        val billingAddressPage = new PageImpl<>(billingAddressList);
         when(billingAddressRepository.findAll(any(Pageable.class))).thenReturn(billingAddressPage);
-        BillingAddressResponseDto responseDto = TestData.billingAddressResponseData();
+        val responseDto = TestData.billingAddressResponseData();
         when(mapper.toDto(any(BillingAddress.class))).thenReturn(responseDto);
 
-        Page<BillingAddressResponseDto> actualResponsePage = billingAddressService.findAllBillingAddresses(Pageable.unpaged());
+        val actualResponsePage = billingAddressService.findAllBillingAddresses(Pageable.unpaged());
 
         assertEquals(1, actualResponsePage.getTotalElements());
         assertEquals(responseDto, actualResponsePage.getContent().get(0));
@@ -79,12 +75,12 @@ class BillingAddressServiceTest {
 
     @Test
     void testFindBillingAddressById() {
-        BillingAddress billingAddress = TestData.billingAddressData();
+        val billingAddress = TestData.billingAddressData();
         when(billingAddressRepository.findById(anyLong())).thenReturn(Optional.of(billingAddress));
-        BillingAddressResponseDto responseDto = TestData.billingAddressResponseData();
+        val responseDto = TestData.billingAddressResponseData();
         when(mapper.toDto(billingAddress)).thenReturn(responseDto);
 
-        Optional<BillingAddressResponseDto> actualResponseOptional = billingAddressService.findBillingAddressById(anyLong());
+        val actualResponseOptional = billingAddressService.findBillingAddressById(anyLong());
 
         assertTrue(actualResponseOptional.isPresent());
         assertEquals(responseDto, actualResponseOptional.get());
@@ -94,15 +90,15 @@ class BillingAddressServiceTest {
 
     @Test
     void testUpdateBillingAddress() {
-        BillingAddressRequestDto billingAddressRequestDto = TestData.billingAddressRequestData();
-        BillingAddress billingAddress = TestData.billingAddressData();
+        val billingAddressRequestDto = TestData.billingAddressRequestData();
+        val billingAddress = TestData.billingAddressData();
         when(billingAddressRepository.findById(anyLong())).thenReturn(Optional.of(billingAddress));
         when(mapper.toEntity(billingAddressRequestDto)).thenReturn(billingAddress);
         when(billingAddressRepository.save(billingAddress)).thenReturn(billingAddress);
-        BillingAddressResponseDto expectedResponseDto = TestData.billingAddressResponseData();
+        val expectedResponseDto = TestData.billingAddressResponseData();
         when(mapper.toDto(billingAddress)).thenReturn(expectedResponseDto);
 
-        BillingAddressResponseDto actualResponseDto = billingAddressService.updateBillingAddress(anyLong(), billingAddressRequestDto);
+        val actualResponseDto = billingAddressService.updateBillingAddress(anyLong(), billingAddressRequestDto);
 
         assertEquals(expectedResponseDto, actualResponseDto);
         verify(billingAddressRepository, times(1)).findById(anyLong());

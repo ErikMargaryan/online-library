@@ -1,9 +1,8 @@
 package com.library.persistence.repository;
 
-import com.library.persistence.entity.BillingAddress;
-import com.library.persistence.entity.User;
 import com.library.testdata.TestData;
 import jakarta.transaction.Transactional;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,13 +22,13 @@ class BillingAddressRepositoryTest {
 
     @Test
     void shouldFindEntityById() {
-        User user = TestData.userData();
-        User savedUser = userRepository.save(user);
-        BillingAddress billingAddress = TestData.billingAddressData();
+        val user = TestData.userData();
+        val savedUser = userRepository.save(user);
+        val billingAddress = TestData.billingAddressData();
         billingAddress.setUser(savedUser);
         billingAddressRepository.save(billingAddress);
 
-        BillingAddress result = billingAddressRepository.findById(billingAddress.getId()).orElseThrow();
+        val result = billingAddressRepository.findById(billingAddress.getId()).orElseThrow();
 
         assertEquals(billingAddress.getPostalZip(), result.getPostalZip());
         assertEquals(billingAddress.getAddress(), result.getAddress());

@@ -5,7 +5,7 @@ import com.library.dto.response.LibraryResponseDto;
 import com.library.rest.assembler.LibraryModelAssembler;
 import com.library.service.LibraryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.val;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -28,7 +28,7 @@ public class LibraryController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<LibraryResponseDto> addLibrary(@RequestBody LibraryRequestDto libraryRequestDto) {
-        LibraryResponseDto libraryResponseDto =
+        val libraryResponseDto =
                 libraryService.createLibrary(libraryRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryModelAssembler.toModel(libraryResponseDto));
     }
@@ -36,8 +36,8 @@ public class LibraryController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<PagedModel<LibraryResponseDto>> getAllLibraries(Pageable pageable) {
-        Page<LibraryResponseDto> result = libraryService.findAllLibraries(pageable);
-        PagedModel<LibraryResponseDto> model = pagedResourcesAssembler.toModel(result, libraryModelAssembler);
+        val result = libraryService.findAllLibraries(pageable);
+        val model = pagedResourcesAssembler.toModel(result, libraryModelAssembler);
         return ResponseEntity.ok(model);
     }
 

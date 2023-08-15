@@ -4,6 +4,7 @@ import com.library.dto.request.UserRoleKeyDto;
 import com.library.dto.response.UserRoleKeyResponseDto;
 import com.library.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +23,7 @@ public class UserRoleController {
     @PostMapping
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<UserRoleKeyResponseDto> assignRoleToUser(@RequestBody UserRoleKeyDto userRoleKeyDto) {
-        UserRoleKeyResponseDto userRoleKeyResponseDto = userRoleService.assignRoleToUser(userRoleKeyDto);
+        val userRoleKeyResponseDto = userRoleService.assignRoleToUser(userRoleKeyDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userRoleKeyResponseDto);
     }
 }

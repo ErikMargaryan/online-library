@@ -1,7 +1,7 @@
 package com.library.persistence.repository;
 
-import com.library.persistence.entity.Library;
 import com.library.testdata.TestData;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +16,10 @@ class LibraryRepositoryTest {
 
     @Test
     void shouldFindEntityById() {
-        Library library = TestData.libraryData();
+        val library = TestData.libraryData();
         libraryRepository.save(library);
 
-        Library result = libraryRepository.findById(library.getId()).orElseThrow();
+        val result = libraryRepository.findById(library.getId()).orElseThrow();
 
         assertEquals(library.getName(), result.getName());
         assertEquals(library.getAddress(), result.getAddress());

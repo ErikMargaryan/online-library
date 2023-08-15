@@ -27,12 +27,12 @@ public class Purchase {
     private LocalDate date = LocalDate.now();
     @Column(name = "total_price")
     private BigDecimal totalPrice;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
-    @OneToMany(mappedBy = "purchase", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<BookPurchase> bookPurchases = new ArrayList<>();
 }

@@ -19,12 +19,12 @@ public class LibraryBook {
     @EmbeddedId
     private LibraryBookKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("library_id")
     @JoinColumn(name = "library_id")
     private Library library;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("book_id")
     @JoinColumn(name = "book_id")
     private Book book;

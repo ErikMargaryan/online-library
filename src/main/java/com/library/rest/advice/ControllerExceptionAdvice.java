@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
+import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,17 +15,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestControllerAdvice
 public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class})
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        List<String> details = new ArrayList<>();
+        val details = new ArrayList<String>();
         details.add(ex.getMessage());
 
-        ErrorDetails error = new ErrorDetails(
+        val error = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getClass().getSimpleName(),
                 details,
@@ -35,9 +35,10 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ValidationException.class})
     public ResponseEntity<Object> handleValidationException(ValidationException ex, WebRequest request) {
-        List<String> details = new ArrayList<>();
+        val details = new ArrayList<String>();
         details.add(ex.getLocalizedMessage());
-        ErrorDetails error = new ErrorDetails(
+
+        val error = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getClass().getSimpleName(),
                 details,
@@ -48,11 +49,11 @@ public class ControllerExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
-        List<String> details = new ArrayList<>();
+        val details = new ArrayList<String>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             details.add(violation.getRootBeanClass().getName() + " " + violation.getPropertyPath() + ": " + violation.getMessage());
         }
-        ErrorDetails error = new ErrorDetails(
+        val error = new ErrorDetails(
                 LocalDateTime.now(),
                 ex.getClass().getSimpleName(),
                 details,

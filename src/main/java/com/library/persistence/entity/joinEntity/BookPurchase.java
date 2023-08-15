@@ -19,12 +19,12 @@ public class BookPurchase {
     @EmbeddedId
     private BookPurchaseKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("book_id")
     @JoinColumn(name="book_id")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("purchase_id")
     @JoinColumn(name="purchase_id")
     private Purchase purchase;

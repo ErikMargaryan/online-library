@@ -43,8 +43,8 @@ public class Book {
     private String publisher;
     @Column(name = "price")
     private BigDecimal price = BigDecimal.ZERO;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<LibraryBook> libraryBooks = new ArrayList<>();
-    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<BookPurchase> bookPurchases = new ArrayList<>();
 }

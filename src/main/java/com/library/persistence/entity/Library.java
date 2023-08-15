@@ -30,6 +30,7 @@ public class Library {
     private String phoneNumber;
     @Column(name = "website")
     private URL website;
-    @OneToMany(mappedBy = "library", cascade = CascadeType.PERSIST)
+//    @OneToMany(mappedBy = "library", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL)
     private List<LibraryBook> libraryBooks = new ArrayList<>();
 }
