@@ -24,7 +24,7 @@ Welcome to the Online Library Application Repository! This application is design
 
 10. **Database Normalization:** Did database normalization for importing user data.
 
-11. **CSV Data Import:** Imported user data from CSV files into different database tables using OpenCSV.
+11. **CSV Data Import:** Imported user data from CSV files into different database tables using OpenCSV library.
 
 12. **Book Data Upload:** Uploaded book data into the database to enrich the library collection.
 
@@ -59,12 +59,12 @@ Test the API endpoints using Postman. You can import the Postman collection to e
 To quickly set up and run the Online Library Application, follow these steps:
 
 1. **Clone the Repository:** Start by cloning the repository to your local machine using the following command:
-   git clone https://github.com/ErikMargaryan/online-library.git
+   - **git** clone https://github.com/ErikMargaryan/online-library.git
 2. **Database Setup:** The application requires a PostgreSQL database. If you don't have PostgreSQL installed, consider using Docker to set up a container:
-   docker run --name some-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=library -d -p 5432:5432 postgres
+   - **docker** run --name some-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=library -d -p 5432:5432 postgres
 4. **Run the Application:** Navigate to the project root directory and run the application using Maven:
-   mvn spring-boot:run
-   This will start the application on `http://localhost:8080`.
+   - **mvn** spring-boot:run
+   - This will start the application on `http://localhost:8080`.
 
 ## Initial Users
 
