@@ -38,7 +38,7 @@ Welcome to the Online Library Application Repository! This application is design
 
 ## Additional Resources
 
-- Check out the [Database UML](https://github.com/ErikMargaryan/online-library/blob/master/online-library-diagram.uml) for a visual representation of the database schema.
+- Check out the [Database UML](https://github.com/ErikMargaryan/online-library/blob/master/online-library-diagram.uml) or [Database PNG](https://github.com/ErikMargaryan/online-library/blob/master/online-library-diagram.png) for a visual representation of the database schema.
 
 - View the [CSV File](https://github.com/ErikMargaryan/online-library/blob/master/data-tVJ5E-PoXliPdkzyzbeE0.csv) used for data importation.
 
