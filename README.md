@@ -22,17 +22,19 @@ Welcome to the Online Library Application Repository! This application is design
 
 9. **Pagination and Sorting:** Implemented features to efficiently manage large datasets.
 
-10. **CSV Data Import:** Imported user data from CSV files into different database tables using OpenCSV.
+10. **Database Normalization:** Did database normalization for importing user data.
 
-11. **Book Data Upload:** Uploaded book data into the database to enrich the library collection.
+11. **CSV Data Import:** Imported user data from CSV files into different database tables using OpenCSV.
 
-12. **Security Mechanism:** Implemented comprehensive authorization and authentication with three user roles.
+12. **Book Data Upload:** Uploaded book data into the database to enrich the library collection.
 
-13. **Open API Specification:** Documented APIs using Open API Specification for easy integration.
+13. **Security Mechanism:** Implemented comprehensive authorization and authentication with three user roles.
 
-14. **Unit Testing:** Comprehensive unit tests for Repository and Service Layers to ensure functionality.
+14. **Open API Specification:** Documented APIs using Open API Specification for easy integration.
 
-15. **Public Page:** Application includes a single public page http://localhost:8080/public.
+15. **Unit Testing:** Comprehensive unit tests for Repository and Service Layers to ensure functionality.
+
+16. **Public Page:** Application includes a single public page http://localhost:8080/public.
 
 ## Additional Resources
 
