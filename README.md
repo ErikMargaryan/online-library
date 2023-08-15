@@ -47,7 +47,7 @@ Welcome to the Online Library Application Repository! This application is design
 To get started with the Online Library Application, follow these steps:
 
 1. [Clone or download](https://github.com/ErikMargaryan/online-library) the repository.
-2. You just need to up the PostgreSQL container on your [Docker Machine](https://hub.docker.com/_/postgres) and then you'll able to do interaction with the database using Swagger or Postman Collection.
+2. You just need to up the [PostgreSQL container](https://hub.docker.com/_/postgres) on your Docker Machine and then you'll able to do interaction with the database using Swagger or Postman Collection.
 
 ## Initial Users
 
