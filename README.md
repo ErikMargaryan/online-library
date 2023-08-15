@@ -73,7 +73,7 @@ Explore the API endpoints and test them using the provided tools:
 
 Test the API endpoints using Postman. You can import the Postman collection to easily set up and execute requests:
 
-- **Postman Collection:** Download and import the [Postman Collection](postman-collection-url) to quickly test API endpoints.
+- **Postman Collection:** Download and import the [Postman Collection](https://erikmargaryan.postman.co/workspace/New-Team-Workspace~b9b7d285-db38-4fc6-abb8-14adaa0ce421/collection/14751799-768c0a90-5c1a-4f7d-8a2e-2b575ebdae7e?action=share&creator=14751799) to quickly test API endpoints.
 
 ## Getting Started
 
