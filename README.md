@@ -24,9 +24,9 @@ Welcome to the Online Library Application Repository! This application is design
 
 10. **Database Normalization:** Did database normalization for importing user data.
 
-11. **CSV Data Import:** Imported user data from CSV files into different database tables using OpenCSV library.
+11. **CSV Data Import:** Imported user data from [CSV file](https://github.com/ErikMargaryan/online-library/blob/master/data-tVJ5E-PoXliPdkzyzbeE0.csv) into different database tables using the OpenCSV library.
 
-12. **Book Data Upload:** Uploaded book data into the database to enrich the library collection.
+12. **Book Data Upload:** Uploaded [book data](https://fakerapi.it/api/v1/books?_quantity=100&_locale=en_US) into the database to enrich the library collection.
 
 13. **Security Mechanism:** Implemented comprehensive authorization and authentication with three user roles.
 
