@@ -32,7 +32,7 @@ Welcome to the Online Library Application Repository! This application is design
 
 14. **Unit Testing:** Comprehensive unit tests for Repository and Service Layers to ensure functionality.
 
-15. **Public Page:** Application includes a single public page for [describe the purpose of the public page].
+15. **Public Page:** Application includes a single public page http://localhost:8080/public.
 
 ## Additional Resources
 
