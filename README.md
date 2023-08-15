@@ -42,29 +42,6 @@ Welcome to the Online Library Application Repository! This application is design
 
 - View the [CSV File](https://github.com/ErikMargaryan/online-library/blob/master/data-tVJ5E-PoXliPdkzyzbeE0.csv) used for data importation.
 
-## Getting Started
-
-To get started with the Online Library Application, follow these steps:
-
-1. [Clone or download](https://github.com/ErikMargaryan/online-library) the repository.
-2. You just need to up the [PostgreSQL container](https://hub.docker.com/_/postgres) on your Docker Machine and then you'll able to do interaction with the database using Swagger or Postman Collection.
-
-## Initial Users
-
-After running the application, the following initial users with different roles will be loaded into the database:
-
-- **USER Role:** 
-  - Email: user@example.com
-  - Password: password123
-
-- **ADMIN Role:** 
-  - Email: admin@example.com
-  - Password: adminpass
-
-- **SUPER_ADMIN Role:** 
-  - Email: erickmargarian@gmail.com
-  - Password: superpass
-
 ## API Documentation
 
 Explore the API endpoints and test them using the provided tools:
@@ -88,5 +65,21 @@ To quickly set up and run the Online Library Application, follow these steps:
 4. **Run the Application:** Navigate to the project root directory and run the application using Maven:
    mvn spring-boot:run
    This will start the application on `http://localhost:8080`.
+
+## Initial Users
+
+After running the application, the following initial users with different roles will be loaded into the database:
+
+- **USER Role:**
+    - Email: user@example.com
+    - Password: password123
+
+- **ADMIN Role:**
+    - Email: admin@example.com
+    - Password: adminpass
+
+- **SUPER_ADMIN Role:**
+    - Email: erickmargarian@gmail.com
+    - Password: superpass
    
 Feel free to explore the repository, contribute, and enhance the application further!
