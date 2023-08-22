@@ -7,6 +7,8 @@ import com.library.dto.response.UserResponseDto;
 import com.library.persistence.entity.BillingAddress;
 import com.library.persistence.entity.CreditCard;
 import com.library.persistence.entity.User;
+import com.library.persistence.repository.BillingAddressRepository;
+import com.library.persistence.repository.CreditCardRepository;
 import com.library.persistence.repository.UserRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.persistence.EntityNotFoundException;
@@ -39,6 +41,10 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final BillingAddressRepository billingAddressRepository;
+
+    private final CreditCardRepository creditCardRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -76,6 +82,7 @@ public class UserService {
                     .email(userData.getEmail())
                     .password(passwordEncoder.encode(userData.getPassword()))
                     .build();
+            userRepository.save(user);
 
             val address = BillingAddress.builder()
                     .address(userData.getAddress())
@@ -83,7 +90,7 @@ public class UserService {
                     .country(userData.getCountry())
                     .user(user)
                     .build();
-            user.setAddress(address);
+            billingAddressRepository.save(address);
 
             val creditCard = CreditCard.builder()
                     .pan(userData.getPan())
@@ -91,9 +98,7 @@ public class UserService {
                     .cvv(Integer.parseInt(userData.getCvv()))
                     .user(user)
                     .build();
-            user.getCreditCards().add(creditCard);
-
-            userRepository.save(user);
+            creditCardRepository.save(creditCard);
         }
     }
 

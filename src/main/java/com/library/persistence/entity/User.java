@@ -36,10 +36,10 @@ public class User {
     @CollectionTable(name = "user_favorite_genres", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "favorite_genre")
     private List<String> favoriteGenres = new ArrayList<>();
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.ALL, CascadeType.PERSIST})
     @PrimaryKeyJoinColumn
     private BillingAddress address;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL, CascadeType.PERSIST})
     private List<CreditCard> creditCards = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchase> purchases = new ArrayList<>();
